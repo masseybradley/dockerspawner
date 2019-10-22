@@ -93,6 +93,15 @@ class SwarmSpawner(DockerSpawner):
         ),
     )
 
+    volume_mount_type = Dict(
+        config=True,
+        help=dedent(
+            """
+            Mount type option for the docker volume.
+            """
+        ),
+    )
+
     # container-removal cannot be disabled for services
     remove = True
 
@@ -110,7 +119,7 @@ class SwarmSpawner(DockerSpawner):
                 Mount(
                     target=vol["bind"],
                     source=host_loc,
-                    type="bind",
+                    type=self.volume_mount_type,
                     read_only=vol["mode"] == "ro",
                     driver_config=driver,
                 )
